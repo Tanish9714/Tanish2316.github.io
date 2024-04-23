@@ -38,6 +38,7 @@ ENV MONGO_DB_PWD=password
 RUN npm install
 EXPOSE 3000
 CMD ["node", "server.js"]```</pre>
+
 ![image](https://github.com/Karans2100/Docker-Blog/assets/104305073/7eedda83-3b86-423a-92a2-7138992b27ca)
 
 All the explanation of the above commands of the Dockerfile can be understood here: https://github.com/Karans2100/Docker-File. Now, we need to create a Docker Image by building the Docker file to run it as a container in the network. 

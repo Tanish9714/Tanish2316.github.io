@@ -1,248 +1,64 @@
 # Running Three Tier Application using Docker
 
-A lightweight Hugo theme leveraging [CSS Flexbox](https://developer.mozilla.org/docs/Web/CSS/CSS_Flexible_Box_Layout).
+To run Three Tier Application using Docker, we need to first create a Full Stack Project. We can use any of our Full Stack Project but if we don't have one then we can use someone else project also. Here, I have used a very easy simple project on GitLab. The link to this project is https://gitlab.com/nanuchi/developing-with-docker. This project is made using HTML, CSS, JavaScript, Express and MongoDB. 
 
-This theme is verified to work with [Hugo](https://gohugo.io) versions v0.112.7–v0.121.2.
+1. First you need to clone the Project Repository from the link using command<br> ```git clone https://gitlab.com/nanuchi/developing-with-docker```
 
+To run a Three Tier Application, we need to run three Docker Containers simultaneously. So, it is necessary to run all these containers inside a network to avoid their interaction with other containers.
 
-## Features
+2. So, Network can be created by using the following command after starting the Docker Engine with name __mongo-network__ <br> ```docker netowrk create mongo-network```
+     ![image](https://github.com/Karans2100/Docker-Blog/assets/104305073/e44e27df-6c1e-454d-b743-f56637cc3088)
 
-- [Flexbox](https://developer.mozilla.org/docs/Web/CSS/CSS_Flexible_Box_Layout)-based responsive layout
-- [100% performance and accessibility scores](https://pagespeed.web.dev/analysis/https-ldeso-github-io-hugo-flex-demo/2fffkrwjoi) on PageSpeed Insights
-- No framework
-- No javascript
-- Full posts in RSS feed
-- RSS page looks like a normal page
-- [Multilingual support](https://gohugo.io/content-management/multilingual/)
-- [Dark theme](https://mzl.la/3PVbdQX)
-
-Optional features:
-
-- [Syntax highlighting](#syntax-highlighting)
-- Show [summaries](https://gohugo.io/content-management/summaries/) on homepage
-- [Schema.org](https://schema.org/), [Open Graph](https://ogp.me/) and [Twitter Cards](https://developer.twitter.com/cards/) metadata
-- [Utterances](https://utteranc.es/) comments widget
-- Custom CSS and JS may be added [site-wide](#custom-css-and-js), or [dynamically](#dynamically-embedded) with shortcodes
-- Built-in shortcodes:
-  - [Math rendering](#math-rendering) with [KaTeX](https://katex.org/)
-  - [Netlify contact form](#netlify-contact-form)
-  - Privacy-friendly [SoundCloud player](#soundcloud-player)
-
-
-## Example
-
-The [demo site](https://ldeso.github.io/hugo-flex-demo/) is built from the [hugo-flex-demo](https://github.com/ldeso/hugo-flex-demo/) repository.
-
-A complete starter template specifically made for this theme is also available at [scivision/hugo-flex-example](https://github.com/scivision/hugo-flex-example/).
-
-
-## Installation
-
-1. [Install Hugo](https://gohugo.io/installation/).
-
-2. [Create a Hugo site](https://gohugo.io/getting-started/directory-structure/).
-
-3. Open a command prompt at the root of the site and download the theme:
-
-```bash
-git init
-git submodule add https://github.com/ldeso/hugo-flex.git themes/hugo-flex
-```
-
-4. Add the theme to the [site configuration](https://gohugo.io/getting-started/configuration/). If the site configuration is a file called `hugo.yaml`:
-
-```bash
-echo 'theme: hugo-flex' >> hugo.yaml
-```
-
-
-## Updating
-
-Open a command prompt at the site's root directory and update the theme:
-
-```bash
-git submodule update --remote --rebase
-```
+You can see all the networks using the command: ```docker network ls```. Now, we need to pull the image of MongoDB from DockerHub and make container from it. Then we need to run this container in the network to access MongoDB Database using Docker Container.
+![image](https://github.com/Karans2100/Docker-Blog/assets/104305073/fa855089-a137-494d-b38f-0341bd2858f9)
 
+3. To pull MongoDB image from DockerHub and run it as container we need to execute the command <br> ```docker run -p 27017:27017 -e MONGO_INITDB_ROOT_USERNAME=admin -e MONGO_INITDB_ROOT_PASSWORD=password --network=mongo-network --name=21BCP377-mongodb -d mongo```
+   ![image](https://github.com/Karans2100/Docker-Blog/assets/104305073/abe81a0e-ad31-46fc-bcc2-0d650e6fe663)
 
-## Configuration
+Here, the __mongo__ image will be automatically pull from the DockerHub to run the Container in __detachable mode__ with name __*21BCP377-mongodb*__ in the network __mongo-network__. The Container will be running on the default *27017 port*. You can check all the running containers using command ```docker ps```. Environment Variables *Username* and *Password* are also passed to run the container. Similarly, we will be creating another container of *Express* by pulling its image from the DockerHub.
 
-Any part of the default theme configuration can be copied to the [site configuration](https://gohugo.io/getting-started/configuration/) to be modified. The default theme configuration is:
+4. Express Container can be run by using the follow command <br>```docker run -p 8081:8081 -e ME_CONFIG_MONGODB_ADMINUSERNAME=admin -e ME_CONFIG_MONGODB_ADMINPASSWORD=password -e ME_CONFIG_MONGODB_SERVER=21BCP377-mongodb --network=mongo-network --name=21BCP377-express -d mongo-express```
+   ![image](https://github.com/Karans2100/Docker-Blog/assets/104305073/d32ce0d5-9efd-4d35-bf78-6bbf80509ee6)
 
-```yaml
-baseURL: https://example.org/
-title: My New Hugo Site
-languageCode: en-us
-theme: hugo-flex
+Here, the container with name __*21BCP377-express*__ is made to connect the MongoDB Database with the Frontend of the project in Docker. As explained above, the container will run on *8081 port*. The environment variables Username and Password are passed of the MongoDB to access the Database along with the container name of the MongoDB in the Server Environment variable. The container will be running on the same network as the above container.
 
-params:
-  color: teal           # Any color in CSS syntax
-  width: 42rem          # Any length in CSS syntax / leave empty to span page
-  divider: \2500\2500   # Any string in CSS syntax / leave empty for no divider
-  footer: >-            # HTML spaces (&#32;) are needed before HTML elements
-    Except where otherwise noted, content on this site is licensed under a &#32;
-    <a href="http://creativecommons.org/licenses/by/4.0/" rel="license">Creative
-    Commons Attribution 4.0 International License</a>.
-  rss: To subscribe to this RSS feed, copy its address and paste it into your
-    favorite feed reader.
-  favicon: false        # Set to true to add a link to the favicon.ico
-  noClasses: true       # Set to the same value as markup.highlight.noClasses
-  katex: 0.16.9         # KaTeX version / leave empty to download latest version
-  headingoffset: 0      # Change heading levels when rendering markdown
-  linkicons: false      # Set to hover or true to add a link icon to headings
-  summaries: false      # Set to true to show summaries of posts on homepage
-  schema: false         # Set to true to add Schema.org metadata
-  opengraph: false      # Set to true to add Open Graph metadata
-  twittercards: false   # Set to true to add Twitter Cards metadata
-  utterances:
-    repo:               # Set to Utterances repo URL to add Utterances comments
-    issueterm:          # Leave empty for the default blog post to issue mapping
-    theme:              # Leave empty to use the adaptive Utterances dark theme
-  netlify:
-    honeypot: false     # Set to true to add honeypot field in contact form
-    recaptcha: false    # Set to true to add recaptcha challenge in contact form
-  # css:                # Uncomment to add custom CSS from the assets directory
-  #   - css/foo.css
-  #   - bar.css
-  # js:                 # Uncomment to add custom JS from the assets directory
-  #   - js/foo.js
-  #   - bar.js
+5. Now, open the link in your browser ```localhost:8081``` and create two databases __my-db__ and __user-accounts__.
+   ![image](https://github.com/Karans2100/Docker-Blog/assets/104305073/46c49839-8d83-49c1-8640-3fe39ef0299f)
 
-menu:
-  main:
-    - name: About
-      pageRef: /about
-      weight: 1
-    - name: Posts
-      pageRef: /post
-      weight: 2
-    - name: Tags
-      pageRef: /tags
-      weight: 3
-    - name: Categories
-      pageRef: /categories
-      weight: 4
-    - name: RSS
-      pageRef: /
-      weight: 5
-      params:
-        - format: rss
+Creating these two databases is necessary as the Frontend will be requiring these while running. Also, we need to change the MongoDB URL mentioned in the ```server.js``` file as we will be running MongoDB using Docker instead of Local Machine.
 
-outputFormats:
-  RSS:
-    mediatype: application/rss+xml
-    baseName: feed      # Rename RSS feed URL from rss.xml to feed.xml
-```
+6. Naviagate to the ```server.js``` file in the project and replace ```mongoUrlLocal``` and ```mongoUrlDocker``` with the following value ```mongodb://admin:password@21BCP377-mongodb:27017```
+   ![image](https://github.com/Karans2100/Docker-Blog/assets/104305073/37fc5783-5ac0-4b9d-a661-ca849a5794eb)
 
+7. Now, we need to delete the Dockerfile already provided in the project and create a new Dockerfile inside the ```app``` folder of the project with the following commands<br> ```FROM node
+WORKDIR /app
+COPY . .
+ENV MONGO_DB_USERNAME=admin
+ENV MONGO_DB_PWD=password
+RUN npm install
+EXPOSE 3000
+CMD ["node", "server.js"]```
+![image](https://github.com/Karans2100/Docker-Blog/assets/104305073/7eedda83-3b86-423a-92a2-7138992b27ca)
 
-## Built-In Shortcodes
+All the explanation of the above commands of the Dockerfile can be understood here: https://github.com/Karans2100/Docker-File. Now, we need to create a Docker Image by building the Docker file to run it as a container in the network. 
 
-### Math Rendering
+8. Open the __CMD__ Terminal inside the ```app``` folder of the project and run the command <br> ```docker build -t 21bcp377-project```
+    ![image](https://github.com/Karans2100/Docker-Blog/assets/104305073/c47f6d1e-5304-4306-95e3-e24ce9bf56fd)
 
-Mathematical formulas written in LaTeX notation can be rendered to HTML by surrounding them with the `math` shortcode:
+The execution of the above command will generate a Docker Image with name __21bcp377-project__ and it will take some time for it. After the Image is created we need to Run it as a Docker Container.
 
-```
-{{% math %}}
-Inline formulas such as $y=ax+b$ are supported, displayed formulas as well:
+9. To run the Image as a Docker Container run the command <br> ```docker run -d -p 3000:3000 21bcp377-project --network=mongo-network --name=21bcp377-project```
+    ![image](https://github.com/Karans2100/Docker-Blog/assets/104305073/03c3c0cb-ad26-414f-bbf8-4e53cdf097c1)
 
-$$e^{i\pi}+1=0$$
-{{%/ math %}}
-```
+After the above command is executed, it will run a Docker Container in *detachable mode* with name __21bcp377-project__ in the same network. 
 
-Using this shortcode bundles the [KaTeX](https://katex.org/) library with the website and renders math on the client side.
-As of 2023, it is [not yet possible](https://github.com/gohugoio/hugo/issues/10044) to render math on the server side with Hugo.
+10. Now, open the following link on you browser ```localhost:3000``` and you will see a webpage running.
+    ![image](https://github.com/Karans2100/Docker-Blog/assets/104305073/3f75ced2-d605-4c02-b0ae-5eb9fa22f593)
+    ![image](https://github.com/Karans2100/Docker-Blog/assets/104305073/982ed4d2-0e28-4d27-8c03-bbaf9ae7e1f8)
+    ![image](https://github.com/Karans2100/Docker-Blog/assets/104305073/17f341ac-acaa-42cf-a1e1-297e94002cd0)
+    ## Note: I have changed the code in the project so you might see some difference in the Images.
 
-### Netlify Contact Form
+12. To push the Docker Image of the project run the command <br> ```docker tag 21bcp377-project karan2100/21bcp377-project-image``` and then ```docker push karan2100/21bcp377-project-image```
+    ![image](https://github.com/Karans2100/Docker-Blog/assets/104305073/7f50afd8-cfcc-4d5c-8a63-fca1ea2b2075)
 
-A contact form that works with the [Netlify Forms](https://docs.netlify.com/forms/setup/) service can be inserted with the shortcode:
-
-```
-{{< contact >}}
-```
-
-A custom URL for the success page may be given as a parameter:
-
-```
-{{< contact "/success" >}}
-```
-
-### SoundCloud Player
-
-A privacy-friendly [SoundCloud player](https://help.soundcloud.com/hc/articles/115003449627) can be inserted with the shortcode:
-
-```
-{{< soundcloud https://soundcloud.com/artist/track >}}
-```
-
-The embed player will only load after user input, and will be replaced by a simple link if JavaScript is disabled.
-
-
-## Syntax Highlighting
-
-By default, [syntax highlighting in Hugo](https://gohugo.io/content-management/syntax-highlighting/) adds inline styles to the HTML code generated by the syntax highlighter.
-This can be problematic if the site has a strict [Content Security Policy](https://developer.mozilla.org/docs/Web/HTTP/CSP).
-This theme makes it possible to automatically use an external stylesheet for syntax highlighting.
-
-To use an external style sheet instead of inline styles, switch the options [markup.highlight.noClasses](https://gohugo.io/getting-started/configuration-markup/#highlight) and params.noClasses to false in the [site configuration](https://gohugo.io/getting-started/configuration/).
-The resulting external style sheet is only included on pages of the site that require it.
-
-The default syntax highlighting style is called [github-dark](https://xyproto.github.io/splash/docs/longer/github-dark.html).
-To use a different style, a style sheet can be [generated](https://gohugo.io/commands/hugo_gen_chromastyles/) at the location `assets/css/syntax.css` by running the following command at the site root:
-
-```sh
-hugo gen chromastyles --style style-name > assets/css/syntax.css
-```
-
-The styles featuring both a high contrast and good compatibility with dark mode are called [average](https://xyproto.github.io/splash/docs/longer/average.html), [doom-one](https://xyproto.github.io/splash/docs/longer/doom-one.html), [doom-one2](https://xyproto.github.io/splash/docs/longer/doom-one2.html), [github-dark](https://xyproto.github.io/splash/docs/longer/github-dark.html), [modus-operandi](https://xyproto.github.io/splash/docs/longer/modus-operandi.html) (light background), [modus-vivendi](https://xyproto.github.io/splash/docs/longer/modus-vivendi.html), [rrt](https://xyproto.github.io/splash/docs/longer/rrt.html), and [witchhazel](https://xyproto.github.io/splash/docs/longer/witchhazel.html).
-
-## Custom CSS and JS
-
-This theme offers two ways to add custom CSS or JS assets, allowing minor modifications to be applied without needing to create a fork.
-
-### Site-Wide
-
-Custom CSS and JS files can be loaded as part of the base assets linked by every page.
-To do so, their filenames have to be added to the [site configuration](#configuration):
-
-```yaml
-params:
-  css:
-    - css/foo.css
-    - bar.css
-  js:
-    - js/foo.js
-    - bar.js
-```
-
-The paths are relative to the [asset directory](https://gohugo.io/getting-started/configuration/#assetdir).
-In this example, the file paths relative to the site root would be: `assets/css/foo.css`, `assets/bar.css`, `assets/js/foo.js`, and `assets/bar.js`.
-
-
-### Dynamically Embedded
-
-Sometimes, custom CSS or JS is needed only on specific pages. This theme offers a mechanism to load CSS or JS assets through [shortcodes](https://gohugo.io/content-management/shortcodes/).
-The assets are loaded only once per page, even if they are required by several shortcodes in the same page.
-
-To load a CSS or a JS resource on each page where a shortcode is used, the [shortcode template](https://gohugo.io/templates/shortcode-templates/) has to add the resource to the `css` or the `js` key of the [Scratch variable](https://gohugo.io/functions/scratch/).
-For instance, a shortcode template `myshortcode.html` containing the line
-
-```html
-{{ resources.Get "myscript.js" | fingerprint | .Page.Scratch.SetInMap "js" "myscript" }}
-```
-
-will cause `myscript.js` to be loaded on every page where `myshortcode` is used.
-
-As a real-life example, this is the template for the built-in SoundCloud shortcode:
-
-```html
-{{ resources.Get "css/soundcloud.css" | .Page.Scratch.SetInMap "css" "soundcloud" }}
-{{ resources.Get "js/soundcloud.js" | .Page.Scratch.SetInMap "js" "soundcloud" }}
-
-<div class="Soundcloud">
-  <a href="{{ .Get 0 }}" target="_blank" class="Soundcloud-box Soundcloud-box--link"><span class="Soundcloud-ellipsis">{{ .Get 0 }}</span></a>
-</div>
-```
-
-## License
-
-This theme is licensed under the [Apache License 2.0](https://github.com/ldeso/hugo-flex/raw/master/LICENSE).
+Here, change __karan2100__ with your Dockerhub username and __21bcp377-project-image__ with your Dockerhub Repository name.

@@ -58,7 +58,7 @@ After the above command is executed, it will run a Docker Container in *detachab
     ![image](https://github.com/Karans2100/Docker-Blog/assets/104305073/982ed4d2-0e28-4d27-8c03-bbaf9ae7e1f8)
     ![image](https://github.com/Karans2100/Docker-Blog/assets/104305073/17f341ac-acaa-42cf-a1e1-297e94002cd0)
   
-## Note: I have changed the code in the project so you might see some difference in the Images.
+## Note: I have changed the code in the project so you might see some difference in the Output.
 
 - To push the Docker Image of the project run the command <br> ```docker tag 21bcp377-project karan2100/21bcp377-project-image``` and then ```docker push karan2100/21bcp377-project-image```
     ![image](https://github.com/Karans2100/Docker-Blog/assets/104305073/7f50afd8-cfcc-4d5c-8a63-fca1ea2b2075)

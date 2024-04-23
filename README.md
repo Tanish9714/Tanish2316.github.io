@@ -30,14 +30,14 @@ Creating these two databases is necessary as the Frontend will be requiring thes
 - Naviagate to the ```server.js``` file in the project and replace ```mongoUrlLocal``` and ```mongoUrlDocker``` with the following value ```mongodb://admin:password@21BCP377-mongodb:27017```
    ![image](https://github.com/Karans2100/Docker-Blog/assets/104305073/37fc5783-5ac0-4b9d-a661-ca849a5794eb)
 
-- Now, we need to delete the Dockerfile already provided in the project and create a new Dockerfile inside the ```app``` folder of the project with the following commands<br> <pre>```FROM node
+- Now, we need to delete the Dockerfile already provided in the project and create a new Dockerfile inside the ```app``` folder of the project with the following commands<br> ```FROM node
 WORKDIR /app
 COPY . .
 ENV MONGO_DB_USERNAME=admin
 ENV MONGO_DB_PWD=password
 RUN npm install
 EXPOSE 3000
-CMD ["node", "server.js"]```</pre>
+CMD ["node", "server.js"]```
 
 ![image](https://github.com/Karans2100/Docker-Blog/assets/104305073/7eedda83-3b86-423a-92a2-7138992b27ca)
 
@@ -57,7 +57,8 @@ After the above command is executed, it will run a Docker Container in *detachab
     ![image](https://github.com/Karans2100/Docker-Blog/assets/104305073/3f75ced2-d605-4c02-b0ae-5eb9fa22f593)
     ![image](https://github.com/Karans2100/Docker-Blog/assets/104305073/982ed4d2-0e28-4d27-8c03-bbaf9ae7e1f8)
     ![image](https://github.com/Karans2100/Docker-Blog/assets/104305073/17f341ac-acaa-42cf-a1e1-297e94002cd0)
-    ## Note: I have changed the code in the project so you might see some difference in the Images.
+  
+## Note: I have changed the code in the project so you might see some difference in the Images.
 
 - To push the Docker Image of the project run the command <br> ```docker tag 21bcp377-project karan2100/21bcp377-project-image``` and then ```docker push karan2100/21bcp377-project-image```
     ![image](https://github.com/Karans2100/Docker-Blog/assets/104305073/7f50afd8-cfcc-4d5c-8a63-fca1ea2b2075)

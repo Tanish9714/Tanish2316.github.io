@@ -30,14 +30,14 @@ Creating these two databases is necessary as the Frontend will be requiring thes
 6. Naviagate to the ```server.js``` file in the project and replace ```mongoUrlLocal``` and ```mongoUrlDocker``` with the following value ```mongodb://admin:password@21BCP377-mongodb:27017```
    ![image](https://github.com/Karans2100/Docker-Blog/assets/104305073/37fc5783-5ac0-4b9d-a661-ca849a5794eb)
 
-7. Now, we need to delete the Dockerfile already provided in the project and create a new Dockerfile inside the ```app``` folder of the project with the following commands<br> ```FROM node
+7. Now, we need to delete the Dockerfile already provided in the project and create a new Dockerfile inside the ```app``` folder of the project with the following commands<br> <pre>```FROM node
 WORKDIR /app
 COPY . .
 ENV MONGO_DB_USERNAME=admin
 ENV MONGO_DB_PWD=password
 RUN npm install
 EXPOSE 3000
-CMD ["node", "server.js"]```
+CMD ["node", "server.js"]```</pre>
 ![image](https://github.com/Karans2100/Docker-Blog/assets/104305073/7eedda83-3b86-423a-92a2-7138992b27ca)
 
 All the explanation of the above commands of the Dockerfile can be understood here: https://github.com/Karans2100/Docker-File. Now, we need to create a Docker Image by building the Docker file to run it as a container in the network. 

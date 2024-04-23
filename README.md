@@ -1,4 +1,4 @@
-# Hugo Flex
+# Running Three Tier Application using Docker
 
 A lightweight Hugo theme leveraging [CSS Flexbox](https://developer.mozilla.org/docs/Web/CSS/CSS_Flexible_Box_Layout).
 

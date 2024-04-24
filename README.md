@@ -21,7 +21,7 @@ You can see all the networks using the command: ```docker network ls```. Now, we
 
 Here, the __mongo__ image will be automatically pull from the DockerHub to run the Container in __detachable mode__ with name __*mongodb*__ in the network __21BCP366-network__. The Container will be running on the default *27017 port*. You can check all the running containers using command ```docker ps```. Environment Variables *Username* and *Password* are also passed to run the container. Similarly, we will be creating another container of *Express* by pulling its image from the DockerHub.
 
-- Express Container can be run by using the follow command <br>```docker run -p 8081:8081 -e ME_CONFIG_MONGODB_ADMINUSERNAME=admin -e ME_CONFIG_MONGODB_ADMINPASSWORD=password -e ME_CONFIG_MONGODB_SERVER=21BCP377-mongodb --network=21BCP366-network -d mongo-express```
+- Express Container can be run by using the follow command <br>```docker run -p 8081:8081 -e ME_CONFIG_MONGODB_ADMINUSERNAME=admin -e ME_CONFIG_MONGODB_ADMINPASSWORD=password -e ME_CONFIG_MONGODB_SERVER=mongodb --network=21BCP366-network -d mongo-express```
    ![Screenshot 2024-04-24 005828](https://github.com/Tanish9714/tanish2316.github.io/assets/146628920/33408de3-e6a3-4b0c-abba-7e289a4103c1)
 
 

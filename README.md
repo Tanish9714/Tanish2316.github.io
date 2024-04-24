@@ -10,7 +10,8 @@ To run a Three Tier Application, we need to run three Docker Containers simultan
      ![image](https://github.com/Karans2100/Docker-Blog/assets/104305073/e44e27df-6c1e-454d-b743-f56637cc3088)
 
 You can see all the networks using the command: ```docker network ls```. Now, we need to pull the image of MongoDB from DockerHub and make container from it. Then we need to run this container in the network to access MongoDB Database using Docker Container.
-![image](https://github.com/Karans2100/Docker-Blog/assets/104305073/fa855089-a137-494d-b38f-0341bd2858f9)
+![Screenshot 2024-04-24 000235](https://github.com/Tanish9714/tanish2316.github.io/assets/146628920/0311ba88-51cc-41f5-b6cc-114543a69e87)
+
 
 - To pull MongoDB image from DockerHub and run it as container we need to execute the command <br> ```docker run -p 27017:27017 -e MONGO_INITDB_ROOT_USERNAME=admin -e MONGO_INITDB_ROOT_PASSWORD=password --network=mongo-network --name=21BCP377-mongodb -d mongo```
    ![image](https://github.com/Karans2100/Docker-Blog/assets/104305073/abe81a0e-ad31-46fc-bcc2-0d650e6fe663)

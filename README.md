@@ -15,7 +15,7 @@ You can see all the networks using the command: ```docker network ls```. Now, we
 
 
 
-- To pull MongoDB image from DockerHub and run it as container we need to execute the command <br> ```docker run -p 27017:27017 -e MONGO_INITDB_ROOT_USERNAME=admin -e MONGO_INITDB_ROOT_PASSWORD=password --network=mongo-network --name=21BCP377-mongodb -d mongo```
+- To pull MongoDB image from DockerHub and run it as container we need to execute the command <br> ```docker run -p 27017:27017 -e MONGO_INITDB_ROOT_USERNAME=admin -e MONGO_INITDB_ROOT_PASSWORD=password --network=21BCP366-network --name=mongodb -d mongo```
    ![Screenshot 2024-04-24 005439](https://github.com/Tanish9714/tanish2316.github.io/assets/146628920/a479f65b-7b8b-4219-9d87-770a3881a777)
 
 

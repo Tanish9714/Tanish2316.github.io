@@ -6,7 +6,7 @@ To run Three Tier Application using Docker, we need to first create a Full Stack
 
 To run a Three Tier Application, we need to run three Docker Containers simultaneously. So, it is necessary to run all these containers inside a network to avoid their interaction with other containers.
 
-- So, Network can be created by using the following command after starting the Docker Engine with name __mongo-network__ <br> ```docker netowrk create mongo-network```
+- So, Network can be created by using the following command after starting the Docker Engine with name __21BCP366-network__ <br> ```docker netowrk create mongo-network```
      ![Screenshot 2024-04-24 001200](https://github.com/Tanish9714/tanish2316.github.io/assets/146628920/35aae8bf-d48f-4270-a3fc-93f9aea25fc4)
 
 
